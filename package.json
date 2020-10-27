@@ -18,9 +18,9 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "@atomist/automation-client": "1.9.2-1.9-fixes-bugfix.20200911193956",
-    "@atomist/sdm": "1.9.1-update-params-1.9.20200911133602",
-    "@atomist/sdm-core": "1.9.1-add-force-param-1.9.20200820141015"
+    "@atomist/automation-client": "1.9.2-1.9-fixes.20201023122700",
+    "@atomist/sdm": "1.9.1-1.9-fixes.20200318141711",
+    "@atomist/sdm-core": "1.9.1-1.9-fixes.20200820201247"
   },
   "devDependencies": {
     "@atomist/sdm-local": "1.2.2-master.20191011215150",
@@ -35,6 +35,8 @@
     "ts-node": "^8.4.1",
     "tslint": "^5.20.1",
     "typedoc": "^0.15.0",
+    "@types/sinon": "^7.0.13",
+    "sinon": "^7.4.1",
     "typescript": "^3.7.2"
   },
   "directories": {

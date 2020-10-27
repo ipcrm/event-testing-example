@@ -14,36 +14,40 @@
  * limitations under the License.
  */
 
+import {GraphQL, Success} from "@atomist/automation-client";
 import {configure} from "@atomist/sdm-core";
-import {Success, GraphQL} from "@atomist/automation-client";
+import {onSampleEvent} from "./lib/event/addSampleEvent";
+import {AddSampleEventMutation, AddSampleEventMutationVariables} from "./lib/typings/types";
 
 /**
  * The main entry point into the SDM
  */
 export const configuration = configure<{}>(async sdm => {
     sdm.addIngester(GraphQL.ingester({ name: "SampleEvent", path: "lib/graphql/ingester/sampleEvent.graphql" }));
-    // sdm.addCommand({
-      // name: "create-sample-event",
-      // intent: "create sample event",
-      // listener: async (ctx) => {
-        // await ctx.addressChannels("Sending custom sample event...");
-        // const result = await ctx.context.graphClient.mutate<
-          // AddSampleEventMutation,
-          // AddSampleEventMutationVariables
-        // >({
-          // name: "AddSampleEvent",
-          // variables: {
-            // data: {
-              // message: `My new event from ${ctx.context.source.identity}`,
-              // timestamp: Date.now().toString(),
-            // },
-          // },
-        // });
+    sdm.addCommand({
+      name: "create-sample-event",
+      intent: "create sample event",
+      listener: async ctx => {
+        await ctx.addressChannels("Sending custom sample event...");
+        const result = await ctx.context.graphClient.mutate<
+          AddSampleEventMutation,
+          AddSampleEventMutationVariables
+        >({
+          name: "AddSampleEvent",
+          path: "lib/graphql/mutation/AddSampleEvent.graphql",
+          variables: {
+            data: {
+              message: `My new event from ${ctx.context.source.identity}`,
+              timestamp: Date.now().toString(),
+            },
+          },
+        });
 
-        // await ctx.addressChannels(
-          // `New event id: ${result.ingestCustomSampleEvent}`
-        // );
-        // return Success;
-      // },
-    // });
+        await ctx.addressChannels(
+          `New event id: ${result.ingestCustomSampleEvent}`,
+        );
+        return Success;
+      },
+    });
+    sdm.addEvent(onSampleEvent);
 });
